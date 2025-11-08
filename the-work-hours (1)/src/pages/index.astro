@@ -1,0 +1,59 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Work Hours Timer">
+    <main class="min-h-screen bg-background">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8">
+                Work Hours Timer
+            </h1>
+            <div class="grid gap-3 sm:gap-4">
+                <a
+                    href="/employer"
+                    class="p-4 sm:p-6 border rounded-lg hover:bg-accent active:scale-95 transition-transform touch-manipulation"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">👔</span>
+                        <div>
+                            <div class="font-semibold text-lg">
+                                Employer Dashboard
+                            </div>
+                            <div class="text-sm text-muted-foreground">
+                                Track work hours
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a
+                    href="/admin"
+                    class="p-4 sm:p-6 border rounded-lg hover:bg-accent active:scale-95 transition-transform touch-manipulation"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">⚙️</span>
+                        <div>
+                            <div class="font-semibold text-lg">Admin Panel</div>
+                            <div class="text-sm text-muted-foreground">
+                                Manage company
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a
+                    href="/super-admin"
+                    class="p-4 sm:p-6 border rounded-lg hover:bg-accent active:scale-95 transition-transform touch-manipulation"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">👑</span>
+                        <div>
+                            <div class="font-semibold text-lg">Super Admin</div>
+                            <div class="text-sm text-muted-foreground">
+                                System management
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+</Layout>

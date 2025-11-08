@@ -1,0 +1,107 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Ustawienia - Employer">
+    <main class="min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold">
+                    ⚙️ Ustawienia
+                </h1>
+                <a
+                    href="/employer"
+                    class="px-4 py-2 bg-muted rounded-lg hover:bg-muted/80 touch-manipulation"
+                >
+                    ← Powrót
+                </a>
+            </div>
+
+            <div id="location-setup-container"></div>
+            <div id="geofence-timer-container"></div>
+            <div id="reminder-setup-container"></div>
+
+            <div class="p-4 border rounded-lg bg-muted/30">
+                <h3 class="font-semibold mb-2">💡 Informacje</h3>
+                <ul
+                    class="text-sm text-muted-foreground space-y-1 list-disc list-inside"
+                >
+                    <li>
+                        Geolokalizacja wymaga uprawnień lokalizacji w
+                        przeglądarce
+                    </li>
+                    <li>Przypomnienia wymagają uprawnień powiadomień</li>
+                    <li>Funkcje działają w tle podczas aktywnej zakładki</li>
+                    <li>
+                        Timer automatyczny włączy się gdy dotrzesz do pracy i
+                        wyłączy gdy ją opuścisz
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    import { LocationSetup } from "../../components/LocationSetup";
+    import { GeofenceTimer } from "../../components/GeofenceTimer";
+    import { ReminderSetup } from "../../components/ReminderSetup";
+    import { createRoot } from "react-dom/client";
+    import type { GeofenceConfig } from "../../lib/geolocation";
+
+    // Load saved location from localStorage
+    const savedLocation = localStorage.getItem("workLocation");
+    const workLocation: GeofenceConfig | undefined = savedLocation
+        ? JSON.parse(savedLocation)
+        : undefined;
+
+    const geofenceEnabled = localStorage.getItem("geofenceEnabled") === "true";
+
+    // Mount LocationSetup
+    const locationContainer = document.getElementById(
+        "location-setup-container",
+    );
+    if (locationContainer) {
+        createRoot(locationContainer).render(
+            LocationSetup({
+                currentLocation: workLocation,
+                onLocationSet: (location: GeofenceConfig) => {
+                    localStorage.setItem(
+                        "workLocation",
+                        JSON.stringify(location),
+                    );
+                    window.location.reload();
+                },
+            }),
+        );
+    }
+
+    // Mount GeofenceTimer if location is set
+    if (workLocation) {
+        const geofenceContainer = document.getElementById(
+            "geofence-timer-container",
+        );
+        if (geofenceContainer) {
+            createRoot(geofenceContainer).render(
+                GeofenceTimer({
+                    workLocation,
+                    enabled: geofenceEnabled,
+                    onAutoStart: () => {
+                        console.log("Auto-start triggered");
+                    },
+                    onAutoStop: () => {
+                        console.log("Auto-stop triggered");
+                    },
+                }),
+            );
+        }
+    }
+
+    // Mount ReminderSetup
+    const reminderContainer = document.getElementById(
+        "reminder-setup-container",
+    );
+    if (reminderContainer) {
+        createRoot(reminderContainer).render(ReminderSetup({}));
+    }
+</script>
